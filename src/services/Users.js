@@ -4,8 +4,8 @@ const registerUser = (user) => {
   return Users.create(user);
 };
 
-const loginUser = (username) => {
-  return Users.find({ username });
+const findByUsername = (email) => {
+  return Users.find({ email });
 };
 
 const getAllUsers = () => {
@@ -28,7 +28,7 @@ const deleteUserById = async (userId) => {
 
 module.exports = {
   registerUser,
-  loginUser,
+  findByUsername,
   getAllUsers,
   getUserById,
   updateUserById,

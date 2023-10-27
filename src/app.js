@@ -9,6 +9,11 @@ app.use(bodyParser.json());
 
 app.use(morgan("dev"));
 
+app.get('/', (req,res)=>{
+  console.log(req.query)
+  res.send(`Hello, ${req.query.person}!`);
+})
+
 // ROUTES
 app.use("/api", routes);
 

@@ -3,7 +3,9 @@ const router = express.Router();
 const { Auth } = require("../middleware");
 const { users } = require("../controllers");
 
-router.route("/").post(users.registerUser).get(Auth, users.getAllUsers);
+router.route("/")
+  .post(users.registerUser)
+  .get(Auth, users.getAllUsers);
 
 router
   .route("/:id")

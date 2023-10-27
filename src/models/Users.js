@@ -11,7 +11,7 @@ const UsersSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    defaul: "",
+    default: "",
   },
   about: {
     type: String,

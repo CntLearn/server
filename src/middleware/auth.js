@@ -1,11 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { secret_key } = require("../config");
 const Auth = (req, res, next) => {
-  //   console.log(req);
-  const token = req.headers.accesstoken;
-  // console.log("token : ", token);
+  const token = req.headers.accesstoken || req.headers.accessToken;
+
   if (token) {
-    jwt.verify(token, secret_key, function (err, decoded) {
+    jwt.verify(token, secret_key,  (err, decoded)=> {
       if (err) {
         let errordata = {
           message: err.message,
@@ -13,16 +12,23 @@ const Auth = (req, res, next) => {
         };
         console.log(errordata);
         return res.status(401).json({
+          success:false,
+          error:{
           message: "Unauthorized Access",
+            reason:'Unauthorized Access'
+          }
         });
       }
       req.decoded = decoded;
-      // console.log("decoded ID : ", decoded);
       next();
     });
   } else {
     return res.status(403).json({
-      message: "Forbidden Access",
+      success:false,
+      error:{
+        message: "Forbidden Access",
+        reason:'Un-Authorized user'
+      }
     });
   }
 };

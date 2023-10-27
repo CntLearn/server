@@ -4,6 +4,7 @@ const router = express.Router();
 const userRoute = require("./User");
 const interactedUserRoute = require("./InteractedUsers");
 const chatsRoute = require("./Chats");
+const todosRoute = require("./Todos");
 
 const defaultRoutes = [
   {
@@ -17,6 +18,10 @@ const defaultRoutes = [
   {
     path: "/chats",
     route: chatsRoute,
+  },
+  {
+    path: "/todos",
+    route: todosRoute,
   },
 ];
 
