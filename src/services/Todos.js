@@ -1,52 +1,32 @@
 const { Todos } = require('../models');
 
-const create = (data) => {
-  return Todos.create(data)
+const create = (todo) => {
+  return Todos.create(todo)
 }
-const getAll = () => {
+const all = () => {
   return Todos.find();
 }
 
-const get = () => {
-  try {
-
-  }
-  catch (e) {
-
-  }
+const get = (id) => {
+  return Todos.findById(id)
 }
 
-const permanent = () => {
-  try {
-
-  }
-  catch (e) {
-
-  }
+const permanent = (id) => {
+  return Todos.deleteOne(id)
 }
 
-const replace = () => {
-  try {
-
-  }
-  catch (e) {
-
-  }
+const replace = (id, todo) => {
+  return Todos.update(id, todo)
 }
 
-const update = () => {
-  try {
-
-  }
-  catch (e) {
-
-  }
+const update = (id, todo) => {
+  return Todos.updateOne(id, todo)
 }
 
 
 module.exports = {
   create,
-  getAll,
+  all,
   get,
   permanent,
   replace,

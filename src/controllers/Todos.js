@@ -1,8 +1,8 @@
 const { todos } = require('../services');
-
+const { handleErrorResponse, handleSuccessResponse } = require('../utils/responses')
 const all = async (req, res) => {
   try {
-    const list = await todos.getAll();
+    const list = await todos.all();
     res.send({
       success: true,
       data: {
@@ -12,8 +12,7 @@ const all = async (req, res) => {
   }
   catch (err) {
     console.log("err : ", err);
-    res.status(500).json({
-      success: false,
+    handleErrorResponse(req, res, 500, {
       error: {
         message: err.message,
         reason: err
@@ -23,13 +22,21 @@ const all = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  console.log('data : ', req.body);
+
+  const { body } = req;
 
   try {
-    // const addRes = await todos.create(req.body);
+    const addRes = await todos.create(body);
+    res.status(200).send({
+      success: true,
+      data: {
+        todo: addRes
+      }
+    })
   }
   catch (err) {
     console.log("err : ", err);
+
     res.status(500).json({
       success: false,
       error: {
@@ -37,42 +44,108 @@ const create = async (req, res) => {
         reason: err
       }
     })
-  }
-}
 
-const get = () => {
-  try {
-
-  }
-  catch (e) {
-
-  }
-}
-
-const permanent = () => {
-  try {
-
-  }
-  catch (e) {
+    handleErrorResponse(req, res, 500, {
+      error: {
+        message: err.message,
+        reason: err
+      }
+    })
 
   }
 }
 
-const replace = () => {
+const get = async (req, res) => {
+  const { id } = req.params;
   try {
-
+    const todo = await todos.get(id);
+    res.status(200).send({
+      success: true,
+      data: {
+        todo: todo
+      }
+    })
   }
   catch (e) {
-
+    console.log("err : ", e);
+    res.status(500).json({
+      success: false,
+      error: {
+        message: e.message,
+        reason: e
+      }
+    })
   }
 }
 
-const update = () => {
+const permanent = async (req, res) => {
+  const { id } = req.params;
   try {
-
+    const todo = await todos.permanent(id);
+    res.status(200).send({
+      success: true,
+      data: {
+        todo: todo
+      }
+    })
   }
   catch (e) {
+    console.log("err : ", e);
+    res.status(500).json({
+      success: false,
+      error: {
+        message: e.message,
+        reason: e
+      }
+    })
+  }
+}
 
+const replace = async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+  try {
+    const todo = await todos.replace(id, body);
+    res.status(200).send({
+      success: true,
+      data: {
+        todo: todo
+      }
+    })
+  }
+  catch (e) {
+    console.log("err : ", e);
+    res.status(500).json({
+      success: false,
+      error: {
+        message: e.message,
+        reason: e
+      }
+    })
+  }
+}
+
+const update = async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+  try {
+    const todo = await todos.update(id, body);
+    res.status(200).send({
+      success: true,
+      data: {
+        todo: todo
+      }
+    })
+  }
+  catch (e) {
+    console.log("err : ", e);
+    res.status(500).json({
+      success: false,
+      error: {
+        message: e.message,
+        reason: e
+      }
+    })
   }
 }
 

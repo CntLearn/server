@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const { todos } = require('../controllers');
-const { Auth } = require('../middleware')
+const { Auth } = require('../middleware');
+
+// validators
+const { create, byId } = require('../validators/todos');
 // todos, Add, getAll , getById, update (archive, delete) , permanent delete.
 
 router.route('/')
   .get(Auth, todos.all)
-  .post(todos.create)
+  .post(Auth, create, todos.create);
 
 
 /*
@@ -19,10 +22,10 @@ router.route('/')
  */
 
 router.route('/:id')
-  .get(Auth, todos.get)
-  .delete(Auth, todos.permanent)
-  .put(Auth, todos.replace)
-  .patch(Auth, todos.update)
+  .get(Auth, byId, todos.get)
+  .delete(Auth, byId, todos.permanent)
+  .put(Auth, byId, todos.replace)
+  .patch(Auth,byId, todos.update)
 
 
 module.exports = router;

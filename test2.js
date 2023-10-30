@@ -109,3 +109,18 @@ log(maxFourWithFunction(100, 250, 175, 125));
 log(maxFourWithFunction(-1, -10, -3, -4));
 log(maxFourWithFunction(0, 0, 0, 0));
 log(maxFourWithFunction(1, 2, 3, 4));
+
+const fun = (data) => {
+  const d = {
+    success: true,
+    ...data,
+  };
+
+  console.log(d, "dddddd");
+};
+
+const fun2 = () => {
+  fun({ error: { msg: "ctest" } });
+};
+
+fun2();
