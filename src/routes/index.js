@@ -8,7 +8,7 @@ const todosRoute = require("./Todos");
 
 const defaultRoutes = [
   {
-    path: "/user",
+    path: "/users",
     route: userRoute,
   },
   {
@@ -22,7 +22,7 @@ const defaultRoutes = [
   {
     path: "/todos",
     route: todosRoute,
-  },
+  }
 ];
 
 defaultRoutes.forEach((route) => {

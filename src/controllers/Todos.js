@@ -1,5 +1,5 @@
 const { todos } = require('../services');
-const { handleErrorResponse, handleSuccessResponse } = require('../utils/responses')
+const { handleErrorResponse, handleSuccessResponse } = require('../utils')
 const all = async (req, res) => {
   try {
     const list = await todos.all();
@@ -36,15 +36,6 @@ const create = async (req, res) => {
   }
   catch (err) {
     console.log("err : ", err);
-
-    res.status(500).json({
-      success: false,
-      error: {
-        message: err.message,
-        reason: err
-      }
-    })
-
     handleErrorResponse(req, res, 500, {
       error: {
         message: err.message,
@@ -68,8 +59,7 @@ const get = async (req, res) => {
   }
   catch (e) {
     console.log("err : ", e);
-    res.status(500).json({
-      success: false,
+    handleErrorResponse(req, res, 500, {
       error: {
         message: e.message,
         reason: e
@@ -85,31 +75,7 @@ const permanent = async (req, res) => {
     res.status(200).send({
       success: true,
       data: {
-        todo: todo
-      }
-    })
-  }
-  catch (e) {
-    console.log("err : ", e);
-    res.status(500).json({
-      success: false,
-      error: {
-        message: e.message,
-        reason: e
-      }
-    })
-  }
-}
-
-const replace = async (req, res) => {
-  const { id } = req.params;
-  const { body } = req;
-  try {
-    const todo = await todos.replace(id, body);
-    res.status(200).send({
-      success: true,
-      data: {
-        todo: todo
+        todo
       }
     })
   }
@@ -139,8 +105,7 @@ const update = async (req, res) => {
   }
   catch (e) {
     console.log("err : ", e);
-    res.status(500).json({
-      success: false,
+    handleErrorResponse(req, res, 500, {
       error: {
         message: e.message,
         reason: e
@@ -154,6 +119,5 @@ module.exports = {
   create,
   get,
   permanent,
-  replace,
   update
 }

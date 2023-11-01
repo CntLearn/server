@@ -1,4 +1,5 @@
-const { handleErrorResponse } = require('../utils/responses')
+const { handleErrorResponse } = require('../utils')
+
 const create = (req, res, next) => {
   const { title = null, user_id = null, createdBy = null, updatedBy = null } = req.body;
 
@@ -22,14 +23,38 @@ const create = (req, res, next) => {
   next();
 }
 
-const byId = (req, res, next) => {
-  const { id } = req.params;
-  if (!id) throw Error('ID is required.');
+const update = (req, res, next) => {
+  const { body } = req;
+
+  if (body.hasOwnProperty('title') && !body.title) {
+    return handleErrorResponse(req, res, 400, { error: { message: 'Title is required' } })
+  }
+
+  if (body.hasOwnProperty('user_id') && !body.user_id) {
+    return handleErrorResponse(req, res, 400, { error: { message: 'User ID is Required' } })
+  }
+
+  if (body.hasOwnProperty('createdBy') && !body.createdBy) {
+    return handleErrorResponse(req, res, 400, { error: { message: 'Created By is Required' } })
+  }
+
+  if (body.hasOwnProperty('updatedBy') && !body.updatedBy) {
+    return handleErrorResponse(req, res, 400, { error: { message: 'Updated By is Required' } })
+  }
+
   next();
 }
 
+const byId = (req, res, next) => {
+  const { id } = req.params;
+  if (!id) {
+    return handleErrorResponse(req, res, 400, { error: { message: 'ID is Required' } })
+  }
+  next();
+}
 
 module.exports = {
   create,
+  update,
   byId
 }

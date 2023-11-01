@@ -12,15 +12,13 @@ const get = (id) => {
 }
 
 const permanent = (id) => {
-  return Todos.deleteOne(id)
-}
-
-const replace = (id, todo) => {
-  return Todos.update(id, todo)
+  return Todos.deleteOne({
+    _id: id
+  })
 }
 
 const update = (id, todo) => {
-  return Todos.updateOne(id, todo)
+  return Todos.updateOne({ _id: id }, todo)
 }
 
 
@@ -29,6 +27,5 @@ module.exports = {
   all,
   get,
   permanent,
-  replace,
   update
 }

@@ -8,10 +8,10 @@ const createChat = (req, res) => {
   chats
     .createChat(userId, chat)
     .then((response) => {
-      res.status(200).json({ status: true, response });
+      res.status(200).json({ success: true, response });
     })
     .catch((error) => {
-      res.status(500).json({ status: false, reason: error.message, error });
+      res.status(500).json({ success: false, reason: error.message, error });
     });
 };
 
@@ -79,11 +79,11 @@ const fetchChatAndGroups = async (req, res) => {
 
       // const chatList = await Promise.all(promisesChatList);
       console.log("after promises chatList");
-      res.status(200).json({ status: true, response, promisesChatList });
+      res.status(200).json({ success: true, response, promisesChatList });
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).json({ status: false, reason: error.message, error });
+      res.status(500).json({ success: false, reason: error.message, error });
     });
 };
 
@@ -104,7 +104,7 @@ const fetchInteraction = (req, res) => {
   if (type === null || userId === null) {
     return res
       .status(400)
-      .json({ status: false, message: "UserId/Type is null" });
+      .json({ success: false, message: "UserId/Type is null" });
   }
   // handle chats.
   if (type.toLowerCase() === "chat") {
@@ -137,16 +137,16 @@ const fetchInteraction = (req, res) => {
 
           const usersList = await Promise.all(promisesChatList);
           */
-          res.status(200).json({ status: true, response: chatsResponse });
+          res.status(200).json({ success: true, response: chatsResponse });
         } else
           res.status(200).json({
-            status: true,
+            success: true,
             response: chatsResponse,
             message: "No any Users List.",
           });
       })
       .catch((error) => {
-        res.status(500).json({ status: false, reason: error.message, error });
+        res.status(500).json({ success: false, reason: error.message, error });
       });
   } else {
     // handle groups
@@ -156,7 +156,7 @@ const fetchInteraction = (req, res) => {
         if (groupsResponse.length > 0) {
           // const promisesGroupList = groupsResponse.map(async (group) => {});
           // const groupsList = await Promise.all(promisesGroupList);
-          res.status(200).json({ status: true, response: groupsResponse });
+          res.status(200).json({ success: true, response: groupsResponse });
         } else {
           res.status(200).json({
             status: true,

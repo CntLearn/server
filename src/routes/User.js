@@ -3,15 +3,25 @@ const router = express.Router();
 const { Auth } = require("../middleware");
 const { users } = require("../controllers");
 
-router.route("/").post(users.registerUser).get(Auth, users.getAllUsers);
+// user validators
+const { register, login } = require('../validators/user');
+
+router
+  .route("/")
+  .post(register, users.registerUser)
+  .get(Auth, users.getAllUsers);
+
+router
+  .route("/login")
+  .post(login, users.loginUser);
 
 router
   .route("/:id")
   .get(Auth, users.getUserById)
-  .patch(Auth, users.updateUserById)
+  .put(Auth, users.updateUserById)
   .delete(Auth, users.deleteUserById);
 
-router.route("/login").post(users.loginUser);
+
 
 // router
 //   .route("/:id")
