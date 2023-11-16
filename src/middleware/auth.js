@@ -4,7 +4,8 @@ const Auth = (req, res, next) => {
   const token = req.headers.accesstoken || req.headers.accessToken;
 
   if (token) {
-    jwt.verify(token, secret_key,  (err, decoded)=> {
+    const accessToken = token.split(' ')[1];
+    jwt.verify(accessToken, secret_key, (err, decoded) => {
       if (err) {
         let errordata = {
           message: err.message,
@@ -12,22 +13,23 @@ const Auth = (req, res, next) => {
         };
         console.log(errordata);
         return res.status(401).json({
-          success:false,
-          error:{
-          message: "Unauthorized Access",
-            reason:'Unauthorized Access'
+          success: false,
+          error: {
+            message: "Unauthorized Access",
+            reason: 'Unauthorized Access'
           }
         });
       }
       req.decoded = decoded;
       next();
     });
-  } else {
+  }
+  else {
     return res.status(403).json({
-      success:false,
-      error:{
+      success: false,
+      error: {
         message: "Forbidden Access",
-        reason:'Un-Authorized user'
+        reason: 'Un-Authorized user'
       }
     });
   }

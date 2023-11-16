@@ -13,16 +13,17 @@ const TodosSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    default: 'todo', // todos, inProgress, codeReview, deployedForTesting, testing, done
+    default: 'todo', // todos, inProgress, codeReview, deployedForTesting, testing, done, release
   },
-  user_id: {
+  // assigner
+  assignedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
     required: true
   },
   due_date: {
     type: Date,
-    default: Date.now
+    default: ''
   },
   priority: {
     type: String,
@@ -36,7 +37,8 @@ const TodosSchema = mongoose.Schema({
   assingedTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
-    default: ''
+    default: null,
+    required: true
   },
   //notes/comments
   comments: {
@@ -53,7 +55,7 @@ const TodosSchema = mongoose.Schema({
     type: Date,
     default: ''
   },
-  isArchice: {
+  isArchive: {
     type: Number,
     default: 0
   },
@@ -67,23 +69,31 @@ const TodosSchema = mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:'Users',
+    ref: 'Users',
     default: '',
-    required:true
+    required: true
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: new Date(),
   },
   updatedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:'Users',
+    ref: 'Users',
     default: '',
-    required:true
+    required: true
   },
   updatedAt: {
     type: Date,
-    default: Date.now,
+    default: new Date()
+  },
+  start_date: {
+    type: Date,
+    default: new Date()
+  },
+  end_date: {
+    type: Date,
+    default: ''
   },
   subTasks: {
     type: [],

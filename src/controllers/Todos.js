@@ -3,7 +3,7 @@ const { handleErrorResponse, handleSuccessResponse } = require('../utils')
 const all = async (req, res) => {
   try {
     const list = await todos.all();
-    res.send({
+    res.status(200).json({
       success: true,
       data: {
         list

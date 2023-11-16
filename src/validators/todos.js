@@ -1,15 +1,20 @@
 const { handleErrorResponse } = require('../utils')
 
 const create = (req, res, next) => {
-  const { title = null, user_id = null, createdBy = null, updatedBy = null } = req.body;
+  const { title = null, assignedBy = null, assingedTo = null, createdBy = null, updatedBy = null } = req.body;
+  console.log('ass : ', assignedBy)
 
   // if (!title) throw Error('Title is Required');  // code crashed after sending error.
   if (!title) {
     return handleErrorResponse(req, res, 400, { error: { message: 'Title is required' } })
   }
 
-  if (!user_id) {
+  if (!assignedBy) {
     return handleErrorResponse(req, res, 400, { error: { message: 'User ID is Required' } })
+  }
+
+  if (!assingedTo) {
+    return handleErrorResponse(req, res, 400, { error: { message: 'Assignee ID is Required' } })
   }
 
   if (!createdBy) {

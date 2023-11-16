@@ -11,8 +11,7 @@ const registerUser = async (req, res) => {
   try {
     const existingUser = await users.findByUsername(body.email);
     if (existingUser.length > 0) {
-      return res.status(200).json({
-        success: false,
+      return handleErrorResponse(req, res, 200, {
         error: {
           message: "User Name Already Exist.",
         }
@@ -64,10 +63,8 @@ const loginUser = async (req, res) => {
         })
       }
 
-      // const token = jwt.sign(user.email, secret_key, { algorithm: 'RS256' });
-      const token = jwt.sign(user.email, secret_key);
-
       const userData = {
+        id: user._id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -77,6 +74,10 @@ const loginUser = async (req, res) => {
         lastSeen: user.lastSeen,
         lastMessage: user.lastMessage
       }
+
+      // const token = jwt.sign(user.email, secret_key, { algorithm: 'RS256' });
+      const token = jwt.sign(userData, secret_key);
+
 
       res.status(200).json({
         success: true,
@@ -99,15 +100,36 @@ const loginUser = async (req, res) => {
 ;
 
 const getAllUsers = (req, res) => {
-  console.log('calling get all ')
   users
     .getAllUsers()
     .then((users) => {
-      res.status(200).json({ status: true, users });
+      const sortByFullName = Array.isArray(users) && users.length > 0 && users.sort((a, b) => {
+        let first = a.fullName.toLowerCase();
+        let second = b.fullName.toLowerCase();
+        if (first > second) {
+          return 1;
+        }
+        else if (first < second) {
+          return -1;
+        }
+        else {
+          return 0;
+        }
+
+      })
+      res.status(200).json({
+        success: true,
+        data: { users:sortByFullName }
+      });
     })
     .catch((error) => {
       console.log("user getting err : ", error);
-      res.status(500).json({ status: false, error: error });
+      handleErrorResponse(req, res, 500, {
+        error: {
+          message: error.message,
+          reason: error
+        }
+      })
     });
 };
 

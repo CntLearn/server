@@ -9,7 +9,7 @@ const findByUsername = (email) => {
 };
 
 const getAllUsers = () => {
-  return Users.find({ isDeleted: false });
+  return Users.find({ isDeleted: false }, { password: 0, plainPassword: 0 });
 };
 
 const getUserById = async (userId) => {

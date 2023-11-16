@@ -6,6 +6,7 @@ const { users } = require("../controllers");
 // user validators
 const { register, login } = require('../validators/user');
 
+// pre routes :  /users
 router
   .route("/")
   .post(register, users.registerUser)
@@ -20,11 +21,5 @@ router
   .get(Auth, users.getUserById)
   .put(Auth, users.updateUserById)
   .delete(Auth, users.deleteUserById);
-
-
-
-// router
-//   .route("/:id")
-//   .delete(userController.deleteUserById);
 
 module.exports = router;

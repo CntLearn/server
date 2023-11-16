@@ -3,6 +3,7 @@ const router = express.Router();
 const { Auth } = require("../middleware");
 const { chats } = require("../controllers");
 
+// pre route /chats
 router
   .route("/")
   .post(Auth, chats.createChat)

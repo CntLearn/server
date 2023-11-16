@@ -21,7 +21,6 @@ const update = (id, todo) => {
   return Todos.updateOne({ _id: id }, todo)
 }
 
-
 module.exports = {
   create,
   all,

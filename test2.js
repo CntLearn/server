@@ -124,3 +124,29 @@ const fun2 = () => {
 };
 
 fun2();
+
+
+console.log('************************************');
+
+
+const f1 = (value)=>{
+  if(!value){
+    return 'Error in value ' + value;
+  }
+}
+
+const f2 = ()=>{
+    const value = "", value2 =2;
+    const v = f1(value);
+  console.log(v)
+     f1(value2);
+
+    console.log('after f1');
+
+}
+
+const f3 = ()=>{
+  f2();
+}
+
+f3();

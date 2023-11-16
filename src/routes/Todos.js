@@ -8,6 +8,7 @@ const { Auth } = require('../middleware');
 const { create, update, byId } = require('../validators/todos');
 // todos, Add, getAll , getById, update (archive, delete) , permanent delete.
 
+// pre route /todos
 router.route('/')
   .get(Auth, todos.all)
   .post(Auth, create, todos.create);
