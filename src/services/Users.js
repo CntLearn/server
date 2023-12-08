@@ -20,7 +20,7 @@ const updateUserById = async (userId, user) => {
   return Users.updateOne({ _id: userId }, user);
 };
 
-// it will be soft deleted, update isDeleted to true.
+// it will be soft deleted, update isDeleted to true, soft mean from db the record wouldn't be deleted.
 
 const deleteUserById = async (userId) => {
   return Users.updateOne({ _id: userId }, { isDeleted: true });
