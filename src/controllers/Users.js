@@ -2,11 +2,15 @@ const { users } = require("../services");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { salt, secret_key } = require("../config");
-const { handleErrorResponse } = require('../utils');
+const { handleErrorResponse } = require("../utils");
 const registerUser = async (req, res) => {
   let { body } = req;
 
-  body = { ...body, fullName: body.firstName + ' ' + body.lastName, plainPassword: body.password }
+  body = {
+    ...body,
+    fullName: body.firstName + " " + body.lastName,
+    plainPassword: body.password,
+  };
 
   try {
     const existingUser = await users.findByUsername(body.email);
@@ -14,7 +18,7 @@ const registerUser = async (req, res) => {
       return handleErrorResponse(req, res, 200, {
         error: {
           message: "User Name Already Exist.",
-        }
+        },
       });
     }
 
@@ -24,102 +28,97 @@ const registerUser = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: { user: usr }
+      data: { user: usr },
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.log("user err : ", error);
     handleErrorResponse(req, res, 500, {
       error: {
         message: error.message,
-        reason: error
-      }
-    })
+        reason: error,
+      },
+    });
   }
 };
 
 const loginUser = async (req, res) => {
-    const { password: userPass = null, email = null } = req.body;
+  const { password: userPass = null, email = null } = req.body;
 
-    try {
-      const usr = await users.findByUsername(email);
-      if (usr.length === 0) {
-        return handleErrorResponse(req, res, 200, {
-          error: {
-            message: "User name or password is incorrect. not found",
-          }
-        })
-      }
-
-      let user = usr[0];
-
-      const confirmUser = await bcrypt.compare(userPass, user?.password);
-
-      if (!confirmUser) {
-        return handleErrorResponse(req, res, 200, {
-          error: {
-            message: "User name or Password is incorrect incorrect.",
-          }
-        })
-      }
-
-      const userData = {
-        id: user._id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        fullName: user.fullName,
-        avatar: user.avatar,
-        about: user.about,
-        lastSeen: user.lastSeen,
-        lastMessage: user.lastMessage
-      }
-
-      // const token = jwt.sign(user.email, secret_key, { algorithm: 'RS256' });
-      const token = jwt.sign(userData, secret_key);
-
-
-      res.status(200).json({
-        success: true,
-        data: {
-          token,
-          user: userData
-        }
+  try {
+    const usr = await users.findByUsername(email);
+    if (usr.length === 0) {
+      return handleErrorResponse(req, res, 200, {
+        error: {
+          message: "User name or password is incorrect. not found",
+        },
       });
     }
-    catch (err) {
-      console.log("user err : ", err);
-      return handleErrorResponse(req, res, 500, {
-        error: {
-          message: err.message,
-          reason: err
-        }
-      })
-    }
-  }
-;
 
+    let user = usr[0];
+
+    const confirmUser = await bcrypt.compare(userPass, user?.password);
+
+    if (!confirmUser) {
+      return handleErrorResponse(req, res, 200, {
+        error: {
+          message: "User name or Password is incorrect incorrect.",
+        },
+      });
+    }
+
+    const userData = {
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: user.fullName,
+      avatar: user.avatar,
+      about: user.about,
+      lastSeen: user.lastSeen,
+      lastMessage: user.lastMessage,
+    };
+
+    // const token = jwt.sign(user.email, secret_key, { algorithm: 'RS256' });
+    const token = jwt.sign(userData, secret_key);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        token,
+        user: userData,
+      },
+    });
+  } catch (err) {
+    console.log("user err : ", err);
+    return handleErrorResponse(req, res, 500, {
+      error: {
+        message: err.message,
+        reason: err,
+      },
+    });
+  }
+};
 const getAllUsers = (req, res) => {
   users
     .getAllUsers()
     .then((users) => {
-      const sortByFullName = Array.isArray(users) && users.length > 0 && users.sort((a, b) => {
-        let first = a.fullName.toLowerCase();
-        let second = b.fullName.toLowerCase();
-        if (first > second) {
-          return 1;
-        }
-        else if (first < second) {
-          return -1;
-        }
-        else {
-          return 0;
-        }
-
-      })
+      const sortByFullName =
+        Array.isArray(users) &&
+        users.length > 0 &&
+        users.sort((a, b) => {
+          let first = a.fullName.toLowerCase();
+          let second = b.fullName.toLowerCase();
+          if (first > second) {
+            return 1;
+          } else if (first < second) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
       res.status(200).json({
         success: true,
-        data: { users:sortByFullName }
+        data: { users: sortByFullName },
       });
     })
     .catch((error) => {
@@ -127,9 +126,9 @@ const getAllUsers = (req, res) => {
       handleErrorResponse(req, res, 500, {
         error: {
           message: error.message,
-          reason: error
-        }
-      })
+          reason: error,
+        },
+      });
     });
 };
 
